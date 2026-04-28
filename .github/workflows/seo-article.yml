@@ -1,0 +1,120 @@
+name: Generate SEO Article
+
+on:
+  schedule:
+    - cron: '0 8 * * 1'  # every Monday at 8am UTC
+  workflow_dispatch:      # manual trigger
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Pick next keyword
+        id: keyword
+        run: |
+          # Find keywords that don't have a folder yet
+          PENDING=""
+          while IFS= read -r kw; do
+            [[ -z "$kw" ]] && continue
+            if [ ! -d "$kw" ]; then
+              PENDING="$kw"
+              break
+            fi
+          done < _seo/keywords.txt
+          if [ -z "$PENDING" ]; then
+            echo "All keywords done."
+            echo "slug=" >> $GITHUB_OUTPUT
+          else
+            echo "slug=$PENDING" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Generate article with Claude
+        if: steps.keyword.outputs.slug != ''
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          SLUG: ${{ steps.keyword.outputs.slug }}
+        run: |
+          python3 - <<'PYEOF'
+          import os, json, re, pathlib, urllib.request
+
+          slug = os.environ["SLUG"]
+          # Convert slug to readable title
+          title_raw = slug.replace("-", " ").title()
+
+          prompt = f"""Tu es un expert SEO français. Génère une page HTML complète et autonome pour le mot-clé "{title_raw}" sur le site chat-gpt-france.fr.
+
+          CONTRAINTES STRICTES :
+          - Retourne UNIQUEMENT le HTML complet, rien d'autre, pas de markdown, pas de balises code
+          - Commence par <!DOCTYPE html> et termine par </html>
+          - Utilise exactement ce CSS externe : <link rel="stylesheet" href="../css/style.css">
+          - Structure de navigation identique aux autres pages du site :
+            <header><div class="header-inner"><a href="/" class="logo">ChatGPT France</a><nav><a href="/">Accueil</a><a href="/gratuit/">Gratuit</a><a href="/sans-inscription/">Sans compte</a><a href="/alternatives-chatgpt/">Alternatives</a><a href="/utiliser-chatgpt/">Tutoriel</a></nav></div></header>
+          - Footer identique : © 2025 chat-gpt-france.fr — Guide indépendant, non affilié à OpenAI
+          - Lang="fr", canonical="https://chat-gpt-france.fr/{slug}/"
+          - Title SEO optimisé (60 chars max), meta description (155 chars max)
+          - Contenu : minimum 800 mots, H2/H3, listes, tableaux si pertinent
+          - Classes CSS disponibles : .hero, .hero-inner, .badge, .btn.btn-primary, .btn.btn-outline, .card-grid, .card, .highlight, .list-check, .steps, .faq, .faq-item, .compare-table, .affiliate-box, .affiliate-box.green, .toc, .breadcrumb, .section-eyebrow, .decorated, .ad-slot
+          - Intègre 2-3 liens internes vers /gratuit/, /alternatives-chatgpt/, /utiliser-chatgpt/
+          - Ajoute schema JSON-LD Article ou FAQPage selon le contenu
+          - Insère 2 blocs <div class="ad-slot"><!-- AdSense --></div> (milieu + bas)
+          - Ton : expert mais accessible, en français courant
+          - Le contenu doit être utile, original et répondre à l'intention de recherche du mot-clé
+
+          Mot-clé principal : {title_raw}
+          URL de la page : https://chat-gpt-france.fr/{slug}/
+          """
+
+          payload = json.dumps({
+            "model": "claude-haiku-4-5-20251001",
+            "max_tokens": 4096,
+            "messages": [{"role": "user", "content": prompt}]
+          }).encode()
+
+          req = urllib.request.Request(
+            "https://api.anthropic.com/v1/messages",
+            data=payload,
+            headers={
+              "x-api-key": os.environ["ANTHROPIC_API_KEY"],
+              "anthropic-version": "2023-06-01",
+              "content-type": "application/json"
+            }
+          )
+          with urllib.request.urlopen(req) as resp:
+            data = json.loads(resp.read())
+
+          html = data["content"][0]["text"].strip()
+
+          # Strip accidental markdown fences if Claude adds them
+          html = re.sub(r'^```html\s*', '', html)
+          html = re.sub(r'^```\s*', '', html)
+          html = re.sub(r'\s*```$', '', html)
+
+          out = pathlib.Path(slug)
+          out.mkdir(exist_ok=True)
+          (out / "index.html").write_text(html, encoding="utf-8")
+          print(f"Article written to {slug}/index.html ({len(html)} chars)")
+          PYEOF
+
+      - name: Commit and push
+        if: steps.keyword.outputs.slug != ''
+        env:
+          SLUG: ${{ steps.keyword.outputs.slug }}
+        run: |
+          git config user.name "SEO Bot"
+          git config user.email "seobot@chat-gpt-france.fr"
+          git add "$SLUG/"
+          git commit -m "SEO: add article $SLUG"
+          git push
+
+      - name: Deploy to Cloudflare Pages
+        if: steps.keyword.outputs.slug != ''
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          npx wrangler@latest pages deploy . --project-name=chat-gpt-france --branch=main
