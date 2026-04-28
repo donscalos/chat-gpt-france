@@ -1,0 +1,2 @@
+# Redirection .com -> .fr (SEO : évite le duplicate content)
+https://chat-gpt-france.com/* https://chat-gpt-france.fr/:splat 301
