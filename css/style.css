@@ -95,29 +95,65 @@ nav a:hover::after, nav a.active::after { transform: scaleX(1); transform-origin
 /* ── HERO ── */
 .hero {
   position: relative; overflow: hidden;
-  background: var(--grad-hero);
+  background: linear-gradient(-45deg, #0a0e27, #1a1040, #0d1a3a, #0f172a, #1e1b4b);
+  background-size: 400% 400%;
+  animation: heroGradient 14s ease infinite;
   padding: 6rem 1.5rem 5rem;
   text-align: center;
 }
-/* Orbes décoratifs animés */
+@keyframes heroGradient {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+/* Grille mouvante */
+.hero-grid {
+  position: absolute; inset: 0; z-index: 0;
+  background-image:
+    linear-gradient(rgba(79,70,229,.12) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(79,70,229,.12) 1px, transparent 1px);
+  background-size: 60px 60px;
+  animation: gridMove 18s linear infinite;
+}
+@keyframes gridMove {
+  from { background-position: 0 0; }
+  to   { background-position: 60px 60px; }
+}
+/* Particules flottantes */
+.hero-grid::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image:
+    radial-gradient(circle, rgba(79,70,229,.7) 1px, transparent 1px),
+    radial-gradient(circle, rgba(6,182,212,.6) 1px, transparent 1px),
+    radial-gradient(circle, rgba(255,255,255,.4) 1px, transparent 1px);
+  background-size: 180px 180px, 240px 240px, 120px 120px;
+  background-position: 30px 40px, 90px 120px, 60px 80px;
+  animation: particleFloat 20s linear infinite;
+}
+@keyframes particleFloat {
+  from { transform: translateY(0); }
+  to   { transform: translateY(-60px); opacity: .3; }
+}
+/* Orbes décoratifs */
 .hero::before, .hero::after {
-  content: ''; position: absolute; border-radius: 50%;
-  filter: blur(80px); opacity: .45; animation: orb 8s ease-in-out infinite alternate;
+  content: ''; position: absolute; border-radius: 50%; z-index: 1;
+  filter: blur(90px); opacity: .5; animation: orb 10s ease-in-out infinite alternate;
 }
 .hero::before {
-  width: 500px; height: 500px;
+  width: 550px; height: 550px;
   background: radial-gradient(circle, #4f46e5, transparent 70%);
-  top: -150px; left: -100px;
+  top: -180px; left: -120px;
 }
 .hero::after {
-  width: 400px; height: 400px;
+  width: 450px; height: 450px;
   background: radial-gradient(circle, #06b6d4, transparent 70%);
-  bottom: -120px; right: -80px;
-  animation-delay: -4s;
+  bottom: -140px; right: -100px;
+  animation-delay: -5s;
 }
 @keyframes orb {
   from { transform: translate(0, 0) scale(1); }
-  to   { transform: translate(40px, 30px) scale(1.1); }
+  to   { transform: translate(50px, 35px) scale(1.15); }
 }
 .hero-inner { position: relative; z-index: 2; max-width: 780px; margin: 0 auto; }
 .badge {
