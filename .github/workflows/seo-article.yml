@@ -101,6 +101,47 @@ jobs:
           print(f"Article written to {slug}/index.html ({len(html)} chars)")
           PYEOF
 
+      - name: Regenerate blog index
+        if: steps.keyword.outputs.slug != ''
+        run: |
+          python3 - <<'PYEOF'
+          import pathlib, re
+
+          SKIP = {'blog', 'css', 'gratuit', 'sans-inscription', 'alternatives-chatgpt', 'utiliser-chatgpt', '_seo', '.github'}
+          ICONS = ['📖','🤖','⚡','🔍','💡','📊','🎯','💻','🌍','📚','🛠️','🚀']
+
+          articles = []
+          for d in sorted(pathlib.Path('.').iterdir()):
+            if d.is_dir() and d.name not in SKIP and not d.name.startswith('.'):
+              html = d / 'index.html'
+              if html.exists():
+                content = html.read_text(encoding='utf-8')
+                title = re.search(r'<title>(.*?)</title>', content)
+                desc  = re.search(r'<meta name="description" content="(.*?)"', content)
+                articles.append({
+                  'slug':  d.name,
+                  'title': title.group(1) if title else d.name.replace('-', ' ').title(),
+                  'desc':  desc.group(1)  if desc  else '',
+                })
+
+          cards = ''
+          for i, a in enumerate(articles):
+            icon = ICONS[i % len(ICONS)]
+            cards += f'''    <a href="/{a['slug']}/" class="card card-link">
+              <div class="card-icon icon-blue">{icon}</div>
+              <h3>{a['title']}</h3>
+              <p>{a['desc']}</p>
+            </a>\n'''
+
+          blog = pathlib.Path('blog/index.html')
+          src = blog.read_text(encoding='utf-8')
+          src = re.sub(r'<!-- ARTICLES_START -->.*?<!-- ARTICLES_END -->',
+                       f'<!-- ARTICLES_START -->\n{cards}    <!-- ARTICLES_END -->',
+                       src, flags=re.DOTALL)
+          blog.write_text(src, encoding='utf-8')
+          print(f"Blog index updated with {len(articles)} articles")
+          PYEOF
+
       - name: Commit and push
         if: steps.keyword.outputs.slug != ''
         env:
@@ -108,8 +149,8 @@ jobs:
         run: |
           git config user.name "SEO Bot"
           git config user.email "seobot@chat-gpt-france.fr"
-          git add "$SLUG/"
-          git commit -m "SEO: add article $SLUG"
+          git add "$SLUG/" blog/index.html
+          git commit -m "SEO: add article $SLUG + update blog index"
           git push
 
       - name: Deploy to Cloudflare Pages
