@@ -95,6 +95,11 @@ jobs:
           html = re.sub(r'^```\s*', '', html)
           html = re.sub(r'\s*```$', '', html)
 
+          # Inject Impact/Semrush affiliate tracking script
+          impact_script = '  <script type="text/javascript">(function(i,m,p,a,c,t){c.ire_o=p;c[p]=c[p]||function(){(c[p].a=c[p].a||[]).push(arguments)};t=a.createElement(m);var z=a.getElementsByTagName(m)[0];t.async=1;t.src=i;z.parentNode.insertBefore(t,z)})(\'https://utt.impactcdn.com/P-A7247698-8f5c-49ef-9fcd-678ec97f37f81.js\',\'script\',\'impactStat\',document,window);impactStat(\'transformLinks\');impactStat(\'trackImpression\');</script>'
+          if 'impactcdn.com' not in html:
+            html = html.replace('</head>', impact_script + '\n</head>')
+
           out = pathlib.Path(slug)
           out.mkdir(exist_ok=True)
           (out / "index.html").write_text(html, encoding="utf-8")
