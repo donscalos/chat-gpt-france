@@ -110,10 +110,24 @@ jobs:
         if: steps.keyword.outputs.slug != ''
         run: |
           python3 - <<'PYEOF'
-          import pathlib, re
+          import pathlib, re, hashlib
 
           SKIP = {'blog', 'css', 'gratuit', 'sans-inscription', 'alternatives-chatgpt', 'utiliser-chatgpt', '_seo', '.github'}
-          ICONS = ['📖','🤖','⚡','🔍','💡','📊','🎯','💻','🌍','📚','🛠️','🚀']
+
+          # Pexels photo pool — AI/tech themed images (free to use)
+          PEXELS_POOL = [
+            '8386440', '8849295', '8566526', '8386437', '8294619',
+            '8294566', '18799044', '8294654', '8294663', '7688592',
+            '8386359', '5181148', '4604607', '8566464', '8386369', '8566470',
+            '8386441', '8849299', '8566527', '3861969', '3861958',
+            '5473955', '4050291', '4050287', '5380642', '5380651',
+          ]
+
+          def pexels_url(slug, w=600, h=360):
+            # deterministic pick based on slug so it never changes on re-run
+            idx = int(hashlib.md5(slug.encode()).hexdigest(), 16) % len(PEXELS_POOL)
+            pid = PEXELS_POOL[idx]
+            return f'https://images.pexels.com/photos/{pid}/pexels-photo-{pid}.jpeg?auto=compress&cs=tinysrgb&w={w}&h={h}&fit=crop'
 
           articles = []
           for d in sorted(pathlib.Path('.').iterdir()):
@@ -130,12 +144,15 @@ jobs:
                 })
 
           cards = ''
-          for i, a in enumerate(articles):
-            icon = ICONS[i % len(ICONS)]
+          for a in articles:
+            img_url = pexels_url(a['slug'])
+            img_alt = a['title'].replace('"', '').strip()
             cards += f'''    <a href="/{a['slug']}/" class="card card-link">
-              <div class="card-icon icon-blue">{icon}</div>
-              <h3>{a['title']}</h3>
-              <p>{a['desc']}</p>
+              <div class="card-thumb"><img src="{img_url}" alt="{img_alt}" loading="lazy"></div>
+              <div class="card-body">
+                <h3>{a['title']}</h3>
+                <p>{a['desc']}</p>
+              </div>
             </a>\n'''
 
           blog = pathlib.Path('blog/index.html')

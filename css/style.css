@@ -255,10 +255,14 @@ h2.decorated::after {
 }
 .card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); border-color: rgba(79,70,229,.2); }
 .card:hover::before { opacity: 1; }
-a.card-link { text-decoration: none; color: inherit; display: block; }
+a.card-link { text-decoration: none; color: inherit; display: block; padding: 0; overflow: hidden; }
 a.card-link h3 { color: var(--primary); }
 a.card-link:hover h3 { text-decoration: underline; }
+a.card-link .card-body { padding: 1.25rem 1.75rem 1.75rem; }
 .card-tag { display: inline-block; margin-top: .75rem; font-size: .75rem; font-weight: 600; padding: .2rem .6rem; border-radius: 99px; background: rgba(79,70,229,.1); color: var(--primary); }
+.card-thumb { width: 100%; height: 180px; overflow: hidden; }
+.card-thumb img { width: 100%; height: 100%; object-fit: cover; transition: transform .4s ease; display: block; }
+a.card-link:hover .card-thumb img { transform: scale(1.05); }
 .card-icon {
   width: 48px; height: 48px; border-radius: var(--radius-md);
   display: flex; align-items: center; justify-content: center;
