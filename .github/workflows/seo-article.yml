@@ -57,6 +57,7 @@ jobs:
           CONTRAINTES STRICTES :
           - Retourne UNIQUEMENT le HTML complet, rien d'autre, pas de markdown, pas de balises code
           - Commence par <!DOCTYPE html> et termine par </html>
+          - Inclure ce snippet Google Analytics dans le <head> : <!-- Google tag (gtag.js) --> <script async src="https://www.googletagmanager.com/gtag/js?id=G-8GW0F66VS5"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){{dataLayer.push(arguments);}}gtag('js',new Date());gtag('config','G-8GW0F66VS5');</script>
           - Utilise exactement ce CSS externe : <link rel="stylesheet" href="../css/style.css">
           - Structure de navigation identique aux autres pages du site :
             <header><div class="header-inner"><a href="/" class="logo">ChatGPT France</a><nav><a href="/">Accueil</a><a href="/gratuit/">Gratuit</a><a href="/sans-inscription/">Sans compte</a><a href="/alternatives-chatgpt/">Alternatives</a><a href="/utiliser-chatgpt/">Tutoriel</a></nav></div></header>
