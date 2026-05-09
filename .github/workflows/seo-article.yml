@@ -169,6 +169,58 @@ jobs:
           print(f"Blog index updated with {len(articles)} articles")
           PYEOF
 
+      - name: Regenerate sitemap
+        if: steps.keyword.outputs.slug != ''
+        run: |
+          python3 - <<'PYEOF'
+          import pathlib, re
+          from datetime import date
+
+          SKIP = {'blog', 'css', 'gratuit', 'sans-inscription', 'alternatives-chatgpt', 'utiliser-chatgpt', '_seo', '.github'}
+          STATIC_PAGES = [
+            ('https://chat-gpt-france.fr/', '1.0', 'weekly'),
+            ('https://chat-gpt-france.fr/gratuit/', '0.9', 'monthly'),
+            ('https://chat-gpt-france.fr/sans-inscription/', '0.9', 'monthly'),
+            ('https://chat-gpt-france.fr/alternatives-chatgpt/', '0.9', 'monthly'),
+            ('https://chat-gpt-france.fr/utiliser-chatgpt/', '0.8', 'monthly'),
+            ('https://chat-gpt-france.fr/blog/', '0.8', 'weekly'),
+          ]
+
+          today = date.today().isoformat()
+          urls = ''
+
+          # Static pages
+          for loc, priority, freq in STATIC_PAGES:
+            urls += f'''  <url>
+    <loc>{loc}</loc>
+    <lastmod>{today}</lastmod>
+    <changefreq>{freq}</changefreq>
+    <priority>{priority}</priority>
+  </url>\n'''
+
+          # Article pages
+          for d in sorted(pathlib.Path('.').iterdir()):
+            if d.is_dir() and d.name not in SKIP and not d.name.startswith('.'):
+              html_file = d / 'index.html'
+              if html_file.exists():
+                mtime = date.fromtimestamp(html_file.stat().st_mtime).isoformat()
+                urls += f'''  <url>
+    <loc>https://chat-gpt-france.fr/{d.name}/</loc>
+    <lastmod>{mtime}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>\n'''
+
+          sitemap = f'''<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+{urls}
+</urlset>'''
+
+          pathlib.Path('sitemap.xml').write_text(sitemap, encoding='utf-8')
+          print(f"Sitemap regenerated with {urls.count('<url>')} URLs")
+          PYEOF
+
       - name: Commit and push
         if: steps.keyword.outputs.slug != ''
         env:
@@ -176,8 +228,8 @@ jobs:
         run: |
           git config user.name "SEO Bot"
           git config user.email "seobot@chat-gpt-france.fr"
-          git add "$SLUG/" blog/index.html
-          git commit -m "SEO: add article $SLUG + update blog index"
+          git add "$SLUG/" blog/index.html sitemap.xml
+          git commit -m "SEO: add article $SLUG + update blog index + sitemap"
           git push
 
       - name: Deploy to Cloudflare Pages
