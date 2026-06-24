@@ -189,12 +189,7 @@ jobs:
 
           # Static pages
           for loc, priority, freq in STATIC_PAGES:
-            urls += f'''  <url>
-    <loc>{loc}</loc>
-    <lastmod>{today}</lastmod>
-    <changefreq>{freq}</changefreq>
-    <priority>{priority}</priority>
-  </url>\n'''
+            urls += f'  <url>\n    <loc>{loc}</loc>\n    <lastmod>{today}</lastmod>\n    <changefreq>{freq}</changefreq>\n    <priority>{priority}</priority>\n  </url>\n'
 
           # Article pages
           for d in sorted(pathlib.Path('.').iterdir()):
@@ -202,18 +197,9 @@ jobs:
               html_file = d / 'index.html'
               if html_file.exists():
                 mtime = date.fromtimestamp(html_file.stat().st_mtime).isoformat()
-                urls += f'''  <url>
-    <loc>https://chat-gpt-france.fr/{d.name}/</loc>
-    <lastmod>{mtime}</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>\n'''
+                urls += f'  <url>\n    <loc>https://chat-gpt-france.fr/{d.name}/</loc>\n    <lastmod>{mtime}</lastmod>\n    <changefreq>monthly</changefreq>\n    <priority>0.7</priority>\n  </url>\n'
 
-          sitemap = f'''<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-
-{urls}
-</urlset>'''
+          sitemap = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + urls + '</urlset>\n'
 
           pathlib.Path('sitemap.xml').write_text(sitemap, encoding='utf-8')
           print(f"Sitemap regenerated with {urls.count('<url>')} URLs")
