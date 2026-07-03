@@ -263,6 +263,16 @@ a.card-link .card-body { padding: 1.25rem 1.75rem 1.75rem; }
 .card-thumb { width: 100%; height: 180px; overflow: hidden; }
 .card-thumb img { width: 100%; height: 100%; object-fit: cover; transition: transform .4s ease; display: block; }
 a.card-link:hover .card-thumb img { transform: scale(1.05); }
+
+/* Hero avec photo de fond (articles) */
+.hero.hero-photo { background-size: cover; background-position: center; background-repeat: no-repeat; position: relative; }
+.hero.hero-photo::after { content: ""; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(10,14,39,.88) 0%, rgba(26,16,64,.82) 50%, rgba(13,26,58,.9) 100%); z-index: 1; }
+.hero.hero-photo .hero-inner, .hero.hero-photo .hero-grid { position: relative; z-index: 2; }
+
+/* Figures dans le corps d'article */
+.article-figure { margin: 2.5rem 0; border-radius: var(--radius-md); overflow: hidden; box-shadow: 0 20px 60px -20px rgba(79,70,229,.35), 0 8px 24px -8px rgba(0,0,0,.25); border: 1px solid rgba(79,70,229,.15); }
+.article-figure img { width: 100%; height: auto; display: block; }
+.article-figure figcaption { padding: .9rem 1.2rem; background: linear-gradient(90deg, rgba(79,70,229,.06), rgba(6,182,212,.04)); font-size: .88rem; color: var(--text-muted); font-style: italic; text-align: center; }
 .card-icon {
   width: 48px; height: 48px; border-radius: var(--radius-md);
   display: flex; align-items: center; justify-content: center;

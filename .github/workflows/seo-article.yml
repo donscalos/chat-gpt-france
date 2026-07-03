@@ -46,11 +46,40 @@ jobs:
           SLUG: ${{ steps.keyword.outputs.slug }}
         run: |
           python3 - <<'PYEOF'
-          import os, json, re, pathlib, urllib.request
+          import os, json, re, pathlib, urllib.request, hashlib
 
           slug = os.environ["SLUG"]
-          # Convert slug to readable title
           title_raw = slug.replace("-", " ").title()
+
+          # Pool Pexels — thème IA / tech / néon / futuriste (vérifié valide)
+          PEXELS_POOL = [
+            '8386440', '4144923', '3861969', '8438923', '5473955',
+            '3861943', '8438918', '6153354', '3184298', '4508751',
+            '373543', '2599244', '8439065', '8386365', '8438961',
+            '373076', '6153738', '1181671', '574077', '220357',
+            '546819', '355948', '907485', '442151', '132700',
+            '315938', '1114690', '1181244', '8386421', '7241428',
+            '6153556', '8386368', '8438969', '5473957', '8438932',
+            '3184338', '8386751', '1181677', '6963622',
+          ]
+
+          def pick_imgs(s, n=3):
+              h = int(hashlib.md5(s.encode()).hexdigest(), 16)
+              idxs, i = [], 0
+              while len(idxs) < n:
+                  idx = (h + i * 7) % len(PEXELS_POOL)
+                  if idx not in idxs:
+                      idxs.append(idx)
+                  i += 1
+              return [PEXELS_POOL[k] for k in idxs]
+
+          def pexels(pid, w):
+              return f"https://images.pexels.com/photos/{pid}/pexels-photo-{pid}.jpeg?auto=compress&cs=tinysrgb&w={w}"
+
+          _imgs = pick_imgs(slug)
+          hero_img = pexels(_imgs[0], 1600)
+          fig1_img = pexels(_imgs[1], 1200)
+          fig2_img = pexels(_imgs[2], 1200)
 
           prompt = f"""Tu es un expert SEO français. Génère une page HTML complète et autonome pour le mot-clé "{title_raw}" sur le site chat-gpt-france.fr.
 
@@ -64,11 +93,20 @@ jobs:
           - Footer identique : © 2025 chat-gpt-france.fr — Guide indépendant, non affilié à OpenAI
           - Lang="fr", canonical="https://chat-gpt-france.fr/{slug}/"
           - Title SEO optimisé (60 chars max), meta description (155 chars max)
-          - Contenu : minimum 800 mots, H2/H3, listes, tableaux si pertinent
-          - Classes CSS disponibles : .hero, .hero-inner, .badge, .btn.btn-primary, .btn.btn-outline, .card-grid, .card, .highlight, .list-check, .steps, .faq, .faq-item, .compare-table, .affiliate-box, .affiliate-box.green, .toc, .breadcrumb, .section-eyebrow, .decorated, .ad-slot
+
+          - HERO AVEC IMAGE (structure EXACTE, garde __HERO_IMG__ tel quel, un script le remplacera) :
+            <div class="hero hero-photo" style="background-image:url('__HERO_IMG__')"><div class="hero-grid"></div><div class="hero-inner"><div class="badge">Guide IA</div><h1>LE TITRE H1 ACCROCHEUR</h1><p>UNE PHRASE D'ACCROCHE COURTE ET INCISIVE</p></div></div>
+
+          - INSERE EXACTEMENT 2 figures dans le corps, à des endroits naturels (garde __FIG1__ et __FIG2__ tels quels) :
+            <figure class="article-figure"><img src="__FIG1__" alt="DESCRIPTION SEO INCLUANT LE MOT-CLE" width="1200" height="800" loading="lazy"><figcaption>Légende contextuelle courte</figcaption></figure>
+            puis, plus loin dans l'article, la meme chose avec __FIG2__.
+            REGLES ALT SEO : chaque alt doit contenir "{title_raw}" ou une variante, décrire l'image de manière naturelle (ex. "Interface ChatGPT sur écran d'ordinateur", "Illustration futuriste de l'intelligence artificielle"), 8-15 mots, sans bourrage de mots-clés. Les légendes doivent rester atmosphériques et générales.
+
+          - Contenu : minimum 900 mots, H2/H3, listes, tableaux si pertinent
+          - Classes CSS disponibles : .hero, .hero-photo, .hero-inner, .hero-grid, .badge, .btn.btn-primary, .btn.btn-outline, .card-grid, .card, .highlight, .list-check, .steps, .faq, .faq-item, .compare-table, .toc, .breadcrumb, .section-eyebrow, .decorated, .article-figure
           - Intègre 2-3 liens internes vers /gratuit/, /alternatives-chatgpt/, /utiliser-chatgpt/
-          - Ajoute schema JSON-LD Article ou FAQPage selon le contenu
-          - Insère 2 blocs <div class="ad-slot"><!-- AdSense --></div> (milieu + bas)
+          - Ajoute schema JSON-LD Article
+          - N'ajoute AUCUN bloc de publicité, AUCUN bloc d'affiliation (pas de ad-slot)
           - Ton : expert mais accessible, en français courant
           - Le contenu doit être utile, original et répondre à l'intention de recherche du mot-clé
 
@@ -106,7 +144,10 @@ jobs:
           html = re.sub(r'^```\s*', '', html)
           html = re.sub(r'\s*```$', '', html)
 
-          # Impact.com tracker removed (account rejected)
+          # Inject Pexels images into placeholders
+          html = html.replace("__HERO_IMG__", hero_img)
+          html = html.replace("__FIG1__", fig1_img)
+          html = html.replace("__FIG2__", fig2_img)
 
           out = pathlib.Path(slug)
           out.mkdir(exist_ok=True)
@@ -122,13 +163,16 @@ jobs:
 
           SKIP = {'blog', 'css', 'gratuit', 'sans-inscription', 'alternatives-chatgpt', 'utiliser-chatgpt', '_seo', '.github'}
 
-          # Pexels photo pool — AI/tech themed images (free to use)
+          # Pexels photo pool — thème IA / tech / néon / futuriste (vérifié)
           PEXELS_POOL = [
-            '8386440', '8849295', '8566526', '8386437', '8294619',
-            '8294566', '18799044', '8294654', '8294663', '7688592',
-            '8386359', '5181148', '4604607', '8566464', '8386369', '8566470',
-            '8386441', '8849299', '8566527', '3861969', '3861958',
-            '5473955', '4050291', '4050287', '5380642', '5380651',
+            '8386440', '4144923', '3861969', '8438923', '5473955',
+            '3861943', '8438918', '6153354', '3184298', '4508751',
+            '373543', '2599244', '8439065', '8386365', '8438961',
+            '373076', '6153738', '1181671', '574077', '220357',
+            '546819', '355948', '907485', '442151', '132700',
+            '315938', '1114690', '1181244', '8386421', '7241428',
+            '6153556', '8386368', '8438969', '5473957', '8438932',
+            '3184338', '8386751', '1181677', '6963622',
           ]
 
           def pexels_url(slug, w=600, h=360):
