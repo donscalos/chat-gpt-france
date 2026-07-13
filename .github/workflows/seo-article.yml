@@ -3,7 +3,6 @@ name: Generate SEO Article
 on:
   schedule:
     - cron: '0 8 * * 1'  # Monday 8am UTC
-    - cron: '0 8 * * 4'  # Thursday 8am UTC
   workflow_dispatch:      # manual trigger
 
 jobs:
@@ -89,7 +88,7 @@ jobs:
           - Inclure ce snippet Google Analytics dans le <head> : <!-- Google tag (gtag.js) --> <script async src="https://www.googletagmanager.com/gtag/js?id=G-8GW0F66VS5"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){{dataLayer.push(arguments);}}gtag('js',new Date());gtag('config','G-8GW0F66VS5');</script>
           - Utilise exactement ce CSS externe : <link rel="stylesheet" href="../css/style.css">
           - Structure de navigation identique aux autres pages du site :
-            <header><div class="header-inner"><a href="/" class="logo">ChatGPT France</a><nav><a href="/">Accueil</a><a href="/gratuit/">Gratuit</a><a href="/sans-inscription/">Sans compte</a><a href="/alternatives-chatgpt/">Alternatives</a><a href="/utiliser-chatgpt/">Tutoriel</a></nav></div></header>
+            <header><div class="header-inner"><a href="/" class="logo">ChatGPT France</a><nav><a href="/">Accueil</a><a href="/gratuit/">Gratuit</a><a href="/sans-inscription/">Sans compte</a><a href="/alternatives-chatgpt/">Alternatives</a><a href="/blog/">Blog</a><a href="/a-propos/">À propos</a></nav></div></header>
           - Footer identique : © 2025 chat-gpt-france.fr — Guide indépendant, non affilié à OpenAI
           - Lang="fr", canonical="https://chat-gpt-france.fr/{slug}/"
           - Title SEO optimisé (60 chars max), meta description (155 chars max)
@@ -104,8 +103,9 @@ jobs:
 
           - Contenu : minimum 900 mots, H2/H3, listes, tableaux si pertinent
           - Classes CSS disponibles : .hero, .hero-photo, .hero-inner, .hero-grid, .badge, .btn.btn-primary, .btn.btn-outline, .card-grid, .card, .highlight, .list-check, .steps, .faq, .faq-item, .compare-table, .toc, .breadcrumb, .section-eyebrow, .decorated, .article-figure
-          - Intègre 2-3 liens internes vers /gratuit/, /alternatives-chatgpt/, /utiliser-chatgpt/
-          - Ajoute schema JSON-LD Article
+          - Intègre 2-3 liens internes vers /gratuit/, /alternatives-chatgpt/, /utiliser-chatgpt/, /a-propos/
+          - Ajoute un schema JSON-LD de type Article avec : headline, description, datePublished, dateModified, "author" valant OBLIGATOIREMENT {{"@type":"Person","name":"Alexandre Meynier","url":"https://chat-gpt-france.fr/a-propos/"}}, "publisher" valant {{"@type":"Organization","name":"ChatGPT France","url":"https://chat-gpt-france.fr/"}}
+          - Après le H1 dans le hero, ajoute une byline : <div class="byline"><span>Par <a href="/a-propos/" class="byline-author">Alexandre Meynier</a></span></div>
           - N'ajoute AUCUN bloc de publicité, AUCUN bloc d'affiliation (pas de ad-slot)
           - Ton : expert mais accessible, en français courant
           - Le contenu doit être utile, original et répondre à l'intention de recherche du mot-clé
@@ -161,7 +161,7 @@ jobs:
           python3 - <<'PYEOF'
           import pathlib, re, hashlib
 
-          SKIP = {'blog', 'css', 'gratuit', 'sans-inscription', 'alternatives-chatgpt', 'utiliser-chatgpt', '_seo', '.github'}
+          SKIP = {'blog', 'css', 'gratuit', 'sans-inscription', 'alternatives-chatgpt', 'utiliser-chatgpt', 'a-propos', '_seo', '.github'}
 
           # Pexels photo pool — thème IA / tech / néon / futuriste (vérifié)
           PEXELS_POOL = [
@@ -223,7 +223,7 @@ jobs:
           import pathlib, re
           from datetime import date
 
-          SKIP = {'blog', 'css', 'gratuit', 'sans-inscription', 'alternatives-chatgpt', 'utiliser-chatgpt', '_seo', '.github'}
+          SKIP = {'blog', 'css', 'gratuit', 'sans-inscription', 'alternatives-chatgpt', 'utiliser-chatgpt', 'a-propos', '_seo', '.github'}
           STATIC_PAGES = [
             ('https://chat-gpt-france.fr/', '1.0', 'weekly'),
             ('https://chat-gpt-france.fr/gratuit/', '0.9', 'monthly'),
@@ -231,6 +231,7 @@ jobs:
             ('https://chat-gpt-france.fr/alternatives-chatgpt/', '0.9', 'monthly'),
             ('https://chat-gpt-france.fr/utiliser-chatgpt/', '0.8', 'monthly'),
             ('https://chat-gpt-france.fr/blog/', '0.8', 'weekly'),
+            ('https://chat-gpt-france.fr/a-propos/', '0.7', 'monthly'),
           ]
 
           today = date.today().isoformat()
