@@ -3,6 +3,8 @@ name: Generate SEO Article
 on:
   schedule:
     - cron: '0 8 * * 1'  # Monday 8am UTC
+    - cron: '0 8 * * 3'  # Wednesday 8am UTC
+    - cron: '0 8 * * 5'  # Friday 8am UTC
   workflow_dispatch:      # manual trigger
 
 jobs:
@@ -273,3 +275,14 @@ jobs:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: |
           npx wrangler@latest pages deploy . --project-name=chat-gpt-france --branch=main
+
+      - name: Ping IndexNow (Bing, Yandex, Seznam)
+        if: steps.keyword.outputs.slug != ''
+        env:
+          SLUG: ${{ steps.keyword.outputs.slug }}
+        run: |
+          sleep 30
+          curl -s -X POST "https://api.indexnow.org/indexnow" \
+            -H "Content-Type: application/json; charset=utf-8" \
+            -d "{\"host\":\"chat-gpt-france.fr\",\"key\":\"26232f15bc779d59f7e8f6e5629d95d6\",\"keyLocation\":\"https://chat-gpt-france.fr/26232f15bc779d59f7e8f6e5629d95d6.txt\",\"urlList\":[\"https://chat-gpt-france.fr/$SLUG/\",\"https://chat-gpt-france.fr/blog/\",\"https://chat-gpt-france.fr/sitemap.xml\"]}" \
+            -w "\nIndexNow HTTP: %{http_code}\n" || true
