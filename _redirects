@@ -1,2 +1,18 @@
 # Redirection .com -> .fr (SEO : évite le duplicate content)
 https://chat-gpt-france.com/* https://chat-gpt-france.fr/:splat 301
+
+# ─────────────────────────────────────────────────────────────
+# LIENS MONETISES — table centrale
+# Tout lien d'affiliation du site pointe vers /go/<slug>, jamais
+# vers le marchand en direct. Changer un identifiant partenaire
+# se fait ici, en une ligne, sans retoucher les articles.
+# Statut 302 volontaire : la destination change, pas la ressource.
+#
+# ETAT AU 16/08/2026 : compte Amazon Partenaires pas encore ouvert.
+# Les routes sont posees, le tag reste a renseigner (AMZN_TAG).
+# ─────────────────────────────────────────────────────────────
+
+# --- Amazon, cluster IA / bureautique (chat-gpt-france) ---
+# /go/livre-ia            https://www.amazon.fr/dp/XXXXXXXXXX?tag=AMZN_TAG    302
+# /go/formation-ia        https://www.amazon.fr/dp/XXXXXXXXXX?tag=AMZN_TAG    302
+# /go/casque-visio        https://www.amazon.fr/dp/XXXXXXXXXX?tag=AMZN_TAG    302
