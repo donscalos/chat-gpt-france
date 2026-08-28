@@ -137,16 +137,16 @@ jobs:
           - SOMMAIRE OBLIGATOIRE, juste apres le fil d'Ariane. Chaque H2 du corps doit porter un id
             et etre repris ici dans le meme ordre :
               <nav class="toc" aria-label="Sommaire"><div class="toc-title">Sommaire</div><ol><li><a href="#id-du-h2">Intitule du H2</a></li>...</ol></nav>
-            Les H2 s ecrivent alors <h2 id="id-du-h2">Intitule du H2</h2>. Ids en minuscules, sans accent, avec des tirets.
+            Les H2 s'ecrivent alors <h2 id="id-du-h2">Intitule du H2</h2>. Ids en minuscules, sans accent, avec des tirets.
           
           - FAQ OBLIGATOIRE en fin d'article, 4 ou 5 questions que se pose reellement quelqu'un qui
             cherche ce mot-cle. Formuler la question comme elle serait tapee. Reponse de 2 a 4 phrases,
             autoportante : elle doit se comprendre seule, sortie de son contexte. Structure EXACTE :
-              <h2 id="faq">Questions frequentes</h2>
+              <h2 id="faq">Questions fréquentes</h2>
           <div class="faq"><div class="faq-item"><h3>LA QUESTION</h3><p>LA REPONSE</p></div>...</div>
           
           - ENCADRE AUTEUR OBLIGATOIRE, tout a la fin du <main>, apres la FAQ :
-              <div class="author-box"><div class="author-ini">AM</div><div><h3>Alexandre Meynier</h3><p>Redacteur specialise sur les outils d'intelligence artificielle generative. Il teste les modeles au quotidien et documente ce qu'ils savent faire, et ce qu'ils ne savent pas faire.</p><p><a href="/a-propos/">En savoir plus</a></p></div></div>
+              <div class="author-box"><div class="author-ini">AM</div><div><h3>Alexandre Meynier</h3><p>Rédacteur spécialisé sur les outils d'intelligence artificielle générative. Il teste les modèles au quotidien et documente ce qu'ils savent faire, et ce qu'ils ne savent pas faire.</p><p><a href="/a-propos/">En savoir plus</a></p></div></div>
           
           - TROIS blocs JSON-LD dans le <head>, pas un seul :
             1. Article (comme decrit plus haut)
@@ -164,6 +164,11 @@ jobs:
           - Ton : expert mais accessible, en français courant
           - Le contenu doit être utile, original et répondre à l'intention de recherche du mot-clé
 
+          
+          - ORTHOGRAPHE : tout le texte publie doit etre en francais correctement ACCENTUE
+            (e accent aigu, e accent grave, cedille, circonflexe). Les consignes ci-dessus sont
+            volontairement ecrites sans accents pour des raisons techniques : ne recopie PAS ce style.
+            Cela vaut aussi pour les questions et reponses de la FAQ, souvent oubliees.
           Mot-clé principal : {title_raw}
           URL de la page : https://chat-gpt-france.fr/{slug}/
           """
