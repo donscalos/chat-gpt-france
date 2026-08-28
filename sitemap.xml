@@ -61,6 +61,12 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://chat-gpt-france.fr/chatgpt-cahier-des-charges/</loc>
+    <lastmod>2026-08-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://chat-gpt-france.fr/chatgpt-code-python/</loc>
     <lastmod>2026-08-28</lastmod>
     <changefreq>monthly</changefreq>
