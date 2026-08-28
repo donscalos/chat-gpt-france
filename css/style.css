@@ -425,3 +425,25 @@ ul.list-check li::before { content: '✓'; position: absolute; left: 0; color: v
 .cluster-links ul { margin: 0; padding-left: 1.1rem; }
 .cluster-links li { margin-bottom: .55rem; color: var(--text-muted); font-size: .96rem; }
 .cluster-links li a { font-weight: 600; }
+
+/* ============================================================
+   SIGNATURE D ARTICLE
+   .byline etait demande par le prompt du bot depuis le debut
+   mais n avait aucun style : la ligne s affichait brute.
+   ============================================================ */
+.byline { display: flex; align-items: center; justify-content: center; gap: .5rem;
+  flex-wrap: wrap; font-size: .9rem; color: rgba(255,255,255,.74); margin: .5rem 0 0; }
+.byline .byline-author { color: #fff; font-weight: 600; }
+.byline .byline-sep { color: rgba(255,255,255,.34); }
+.byline a { color: rgba(255,255,255,.9); }
+.byline a:hover { color: #fff; }
+
+.author-box { display: flex; gap: 1.1rem; align-items: flex-start;
+  background: var(--bg-subtle); border: 1px solid var(--border);
+  border-radius: var(--radius-md); padding: 1.4rem 1.6rem; margin: 2.4rem 0; }
+.author-box .author-ini { flex: none; width: 48px; height: 48px; border-radius: 50%;
+  background: var(--grad-primary); color: #fff; font-family: var(--font-head);
+  font-weight: 800; display: flex; align-items: center; justify-content: center; }
+.author-box h3 { margin: 0 0 .25rem; font-size: 1rem; }
+.author-box p { margin: 0 0 .35rem; font-size: .9rem; color: var(--text-muted); }
+.author-box p:last-child { margin-bottom: 0; }

@@ -48,6 +48,7 @@ jobs:
         run: |
           python3 - <<'PYEOF'
           import os, json, re, pathlib, urllib.request, hashlib
+          from datetime import date
 
           slug = os.environ["SLUG"]
           title_raw = slug.replace("-", " ").title()
@@ -82,6 +83,32 @@ jobs:
           fig1_img = pexels(_imgs[1], 1200)
           fig2_img = pexels(_imgs[2], 1200)
 
+          MOIS = ['janvier', 'fevrier', 'mars', 'avril', 'mai', 'juin', 'juillet',
+                  'aout', 'septembre', 'octobre', 'novembre', 'decembre']
+          _t = date.today()
+          date_fr = str(_t.day) + ' ' + MOIS[_t.month - 1] + ' ' + str(_t.year)
+          date_iso = _t.isoformat()
+          
+          # --- Maillage : articles REELLEMENT presents dans le depot ---
+          SKIP_LINK = {'blog', 'css', '_seo', '.github', 'a-propos'}
+          _existing = []
+          for _d in sorted(pathlib.Path('.').iterdir()):
+              if not _d.is_dir() or _d.name.startswith('.'):
+                  continue
+              if _d.name in SKIP_LINK or _d.name == slug:
+                  continue
+              _h = _d / 'index.html'
+              if not _h.exists():
+                  continue
+              _m = re.search(r'<title>(.*?)</title>', _h.read_text(encoding='utf-8'))
+              _t = _m.group(1).split('|')[0].strip() if _m else _d.name.replace('-', ' ')
+              _existing.append('/' + _d.name + '/ = ' + _t)
+          # ordre deterministe mais different pour chaque article
+          _existing.sort(key=lambda s: hashlib.md5((slug + s).encode()).hexdigest())
+          internal_links = chr(10).join('  ' + x for x in _existing[:12])
+          if not internal_links:
+              internal_links = '  (aucun autre article publie pour le moment)'
+          
           prompt = f"""Tu es un expert SEO français. Génère une page HTML complète et autonome pour le mot-clé "{title_raw}" sur le site chat-gpt-france.fr.
 
           CONTRAINTES STRICTES :
@@ -103,11 +130,36 @@ jobs:
             puis, plus loin dans l'article, la meme chose avec __FIG2__.
             REGLES ALT SEO : chaque alt doit contenir "{title_raw}" ou une variante, décrire l'image de manière naturelle (ex. "Interface ChatGPT sur écran d'ordinateur", "Illustration futuriste de l'intelligence artificielle"), 8-15 mots, sans bourrage de mots-clés. Les légendes doivent rester atmosphériques et générales.
 
-          - Contenu : minimum 900 mots, H2/H3, listes, tableaux si pertinent
+          - Juste apres le hero, ouvre un <main> et commence par un fil d'Ariane :
+              <div class="breadcrumb"><a href="/">Accueil</a><span>&rsaquo;</span><a href="/blog/">Blog</a><span>&rsaquo;</span> {title_raw}</div>
+          - Dans le hero, juste apres le H1, ajoute : <div class="byline"><span>Par <a href="/a-propos/" class="byline-author">Alexandre Meynier</a></span><span class="byline-sep">&bull;</span><span>Mis a jour le {date_fr}</span></div>
+          - Contenu : minimum 1100 mots, H2/H3, listes, tableaux si pertinent
+          - SOMMAIRE OBLIGATOIRE, juste apres le fil d'Ariane. Chaque H2 du corps doit porter un id
+            et etre repris ici dans le meme ordre :
+              <nav class="toc" aria-label="Sommaire"><div class="toc-title">Sommaire</div><ol><li><a href="#id-du-h2">Intitule du H2</a></li>...</ol></nav>
+            Les H2 s ecrivent alors <h2 id="id-du-h2">Intitule du H2</h2>. Ids en minuscules, sans accent, avec des tirets.
+          
+          - FAQ OBLIGATOIRE en fin d'article, 4 ou 5 questions que se pose reellement quelqu'un qui
+            cherche ce mot-cle. Formuler la question comme elle serait tapee. Reponse de 2 a 4 phrases,
+            autoportante : elle doit se comprendre seule, sortie de son contexte. Structure EXACTE :
+              <h2 id="faq">Questions frequentes</h2>
+          <div class="faq"><div class="faq-item"><h3>LA QUESTION</h3><p>LA REPONSE</p></div>...</div>
+          
+          - ENCADRE AUTEUR OBLIGATOIRE, tout a la fin du <main>, apres la FAQ :
+              <div class="author-box"><div class="author-ini">AM</div><div><h3>Alexandre Meynier</h3><p>Redacteur specialise sur les outils d'intelligence artificielle generative. Il teste les modeles au quotidien et documente ce qu'ils savent faire, et ce qu'ils ne savent pas faire.</p><p><a href="/a-propos/">En savoir plus</a></p></div></div>
+          
+          - TROIS blocs JSON-LD dans le <head>, pas un seul :
+            1. Article (comme decrit plus haut)
+            2. BreadcrumbList reprenant exactement le fil d'Ariane : {{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{{"@type":"ListItem","position":1,"name":"Accueil","item":"https://chat-gpt-france.fr/"}},{{"@type":"ListItem","position":2,"name":"Blog","item":"https://chat-gpt-france.fr/blog/"}},{{"@type":"ListItem","position":3,"name":"TITRE DE LA PAGE","item":"https://chat-gpt-france.fr/{slug}/"}}]}}
+            3. FAQPage reprenant MOT POUR MOT les questions et reponses de la FAQ visible : {{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{{"@type":"Question","name":"LA QUESTION","acceptedAnswer":{{"@type":"Answer","text":"LA REPONSE"}}}}]}}
+            Le FAQPage et la FAQ visible doivent etre identiques : Google penalise la divergence.
+          
+          - LIENS INTERNES : place 4 a 6 liens contextuels DANS LE TEXTE, en ancre descriptive
+            (jamais "cliquez ici"). Choisis-les dans cette liste d'articles qui existent vraiment.
+            N'invente aucune autre URL d'article, elle serait morte :
+          {internal_links}
           - Classes CSS disponibles : .hero, .hero-photo, .hero-inner, .hero-grid, .badge, .btn.btn-primary, .btn.btn-outline, .card-grid, .card, .highlight, .list-check, .steps, .faq, .faq-item, .compare-table, .toc, .breadcrumb, .section-eyebrow, .decorated, .article-figure
-          - Intègre 2-3 liens internes vers /gratuit/, /alternatives-chatgpt/, /utiliser-chatgpt/, /a-propos/
-          - Ajoute un schema JSON-LD de type Article avec : headline, description, datePublished, dateModified, "author" valant OBLIGATOIREMENT {{"@type":"Person","name":"Alexandre Meynier","url":"https://chat-gpt-france.fr/a-propos/"}}, "publisher" valant {{"@type":"Organization","name":"ChatGPT France","url":"https://chat-gpt-france.fr/"}}
-          - Après le H1 dans le hero, ajoute une byline : <div class="byline"><span>Par <a href="/a-propos/" class="byline-author">Alexandre Meynier</a></span></div>
+          - Ajoute un schema JSON-LD de type Article avec : headline, description, "datePublished":"{date_iso}", "dateModified":"{date_iso}", "author" valant OBLIGATOIREMENT {{"@type":"Person","name":"Alexandre Meynier","url":"https://chat-gpt-france.fr/a-propos/"}}, "publisher" valant {{"@type":"Organization","name":"ChatGPT France","url":"https://chat-gpt-france.fr/"}}
           - N'ajoute AUCUN bloc de publicité, AUCUN bloc d'affiliation (pas de ad-slot)
           - Ton : expert mais accessible, en français courant
           - Le contenu doit être utile, original et répondre à l'intention de recherche du mot-clé
@@ -118,7 +170,7 @@ jobs:
 
           payload = json.dumps({
             "model": "claude-haiku-4-5-20251001",
-            "max_tokens": 8000,
+            "max_tokens": 12000,
             "messages": [{"role": "user", "content": prompt}]
           }).encode()
 
