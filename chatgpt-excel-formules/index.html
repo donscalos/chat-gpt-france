@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChatGPT Excel Formules : Générer & Expliquer</title>
+    <meta name="description" content="Apprenez à utiliser ChatGPT pour générer, expliquer et corriger vos formules Excel. Guide complet avec exemples pratiques.">
+    <link rel="canonical" href="https://chat-gpt-france.fr/chatgpt-excel-formules/">
+    <link rel="stylesheet" href="../css/style.css">
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8GW0F66VS5"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-8GW0F66VS5');
+    </script>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "headline": "ChatGPT Excel Formules : Générer & Expliquer",
+        "description": "Apprenez à utiliser ChatGPT pour générer, expliquer et corriger vos formules Excel. Guide complet avec exemples pratiques.",
+        "datePublished": "2026-09-09",
+        "dateModified": "2026-09-09",
+        "author": {
+            "@type": "Person",
+            "name": "Alexandre Meynier",
+            "url": "https://chat-gpt-france.fr/a-propos/"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "ChatGPT France",
+            "url": "https://chat-gpt-france.fr/"
+        }
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Accueil",
+                "item": "https://chat-gpt-france.fr/"
+            },
+            {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Blog",
+                "item": "https://chat-gpt-france.fr/blog/"
+            },
+            {
+                "@type": "ListItem",
+                "position": 3,
+                "name": "ChatGPT Excel Formules",
+                "item": "https://chat-gpt-france.fr/chatgpt-excel-formules/"
+            }
+        ]
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+            {
+                "@type": "Question",
+                "name": "ChatGPT peut-il vraiment générer des formules Excel complexes ?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Oui, ChatGPT excelle dans la génération de formules Excel, même complexes. Il comprend la logique des fonctions comme VLOOKUP, INDEX-MATCH, SUMIF ou les formules matricielles. Cependant, plus la formule est spécifique à votre contexte, plus vous devez fournir de détails précis pour obtenir un résultat optimal. Pour une demande vague, le résultat peut nécessiter des ajustements."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "Comment bien prompt ChatGPT pour obtenir la bonne formule Excel ?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "La clarté de votre demande est cruciale. Décrivez précisément ce que vous voulez obtenir, mentionnez les colonnes ou plages de données concernées, et donnez un exemple concret si possible. Indiquez aussi la version d'Excel que vous utilisez (certaines fonctions varient). Par exemple, au lieu de « fais-moi une formule », écrivez : « Dans la colonne A j'ai des noms, dans la colonne B des ventes. Je veux trouver le nom avec la vente la plus élevée »."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "ChatGPT peut-il expliquer des formules Excel existantes ?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Absolument. Copiez-collez simplement votre formule dans ChatGPT en demandant une explication. Il vous décomposera chaque fonction, expliquera la logique globale, et vous montrera comment la modifier si besoin. C'est particulièrement utile pour comprendre des formules trouvées sur internet ou créées par des collègues."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "Quels types de formules Excel ChatGPT maîtrise-t-il le mieux ?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "ChatGPT maîtrise très bien les formules de recherche (VLOOKUP, INDEX-MATCH), les formules conditionnelles (IF, IFS), les formules de sommation (SUMIF, SUMIFS), et les manipulations de texte (CONCATENATE, LEFT, RIGHT). Les formules plus exotiques ou spécifiques à des plugins tiers peuvent parfois poser problème. Testez toujours le résultat dans votre fichier avant de l'utiliser en production."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "Y a-t-il une différence entre ChatGPT gratuit et ChatGPT Plus pour les formules Excel ?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "ChatGPT gratuit (GPT-3.5) peut générer des formules Excel, mais avec moins de précision sur les cas complexes. ChatGPT Plus (GPT-4) offre une meilleure compréhension des formules imbriquées et des logiques métier avancées. Pour des besoins professionnels sérieux, GPT-4 est recommandé, mais GPT-3.5 suffit souvent pour l'apprentissage ou des formules simples à intermédiaires."
+                }
+            }
+        ]
+    }
+    </script>
+</head>
+<body>
+    <header>
+        <div class="header-inner">
+            <a href="/" class="logo">ChatGPT France</a>
+            <nav>
+                <a href="/">Accueil</a>
+                <a href="/gratuit/">Gratuit</a>
+                <a href="/sans-inscription/">Sans compte</a>
+                <a href="/alternatives-chatgpt/">Alternatives</a>
+                <a href="/blog/">Blog</a>
+                <a href="/a-propos/">À propos</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="hero hero-photo" style="background-image: url('https://images.pexels.com/photos/8386751/pexels-photo-8386751.jpeg?auto=compress&cs=tinysrgb&w=1600')">
+        <div class="hero-grid"></div>
+        <div class="hero-inner">
+            <div class="badge">Guide IA</div>
+            <h1>ChatGPT Excel Formules : Générez & Maîtrisez</h1>
+            <div class="byline">
+                <span>Par <a href="/a-propos/" class="byline-author">Alexandre Meynier</a></span>
+                <span class="byline-sep">&bull;</span>
+                <span>Mis à jour le 9 septembre 2026</span>
+            </div>
+            <p>Arrêtez de galérer sur vos formules Excel. Découvrez comment ChatGPT les génère, les explique et vous fait gagner des heures.</p>
+        </div>
+    </div>
+
+    <main>
+        <div class="breadcrumb">
+            <a href="/">Accueil</a>
+            <span>&rsaquo;</span>
+            <a href="/blog/">Blog</a>
+            <span>&rsaquo;</span>
+            ChatGPT Excel Formules
+        </div>
+
+        <nav class="toc" aria-label="Sommaire">
+            <div class="toc-title">Sommaire</div>
+            <ol>
+                <li><a href="#pourquoi-chatgpt-excel">Pourquoi utiliser ChatGPT pour vos formules Excel ?</a></li>
+                <li><a href="#comment-bien-demander">Comment bien demander une formule à ChatGPT</a></li>
+                <li><a href="#exemples-pratiques">Exemples pratiques : les formules les plus utiles</a></li>
+                <li><a href="#corrections-et-optimisations">Corriger et optimiser vos formules existantes</a></li>
+                <li><a href="#limites-et-pieges">Limites et pièges à connaître</a></li>
+                <li><a href="#faq">Questions fréquentes</a></li>
+            </ol>
+        </nav>
+
+        <h2 id="pourquoi-chatgpt-excel">Pourquoi utiliser ChatGPT pour vos formules Excel ?</h2>
+        <p>Excel est un outil extraordinaire pour analyser et manipuler des données, mais ses formules peuvent devenir complexes et décourageantes. Que vous soyez débutant ou utilisateur avancé, ChatGPT transforme votre productivité en vous permettant de générer des formules en secondes au lieu de les chercher pendant des heures sur des forums.</p>
+
+        <p>L'avantage majeur : vous obtenez non seulement la formule, mais aussi une explication détaillée. Cela vous permet d'apprendre et de l'adapter à votre contexte spécifique. Contrairement aux tutoriels YouTube ou aux articles statiques, ChatGPT s'ajuste à votre problème exact. Vous travaillez avec des données de ventes par région et vous avez besoin d'un calcul personnalisé ? ChatGPT comprend votre métier et génère la solution idéale.</p>
+
+        <p>Un autre bénéfice souvent oublié : la <strong>correction de formules cassées</strong>. Vous avez une formule qui retourne une erreur #VALUE! ou #REF! ? Copié-collez-la à ChatGPT avec le contexte, et il vous expliquera le bug en trois secondes. Cela vous économise un appel à votre IT ou une heure de débogage frustrante.</p>
+
+        <figure class="article-figure">
+            <img src="https://images.pexels.com/photos/5473955/pexels-photo-5473955.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="Interface ChatGPT montrant une formule Excel VLOOKUP complexe sur écran" width="1200" height="800" loading="lazy">
+            <figcaption>ChatGPT génère et explique les formules Excel en contexte, en français et adapté à votre besoin spécifique.</figcaption>
+        </figure>
+
+        <h2 id="comment-bien-demander">Comment bien demander une formule à ChatGPT</h2>
+        <p>La qualité de votre réponse dépend entièrement de la clarté de votre demande. Voici comment bien formuler votre question.</p>
+
+        <h3>Soyez précis sur votre objectif</h3>
+        <p>Au lieu de : « Je veux une formule Excel qui fasse un truc »<br>
+        Dites : « Je veux calculer le chiffre d'affaires total pour chaque vendeur, en multipliant la quantité vendue par le prix unitaire, regroupé par nom de vendeur ».</p>
+
+        <p>Plus l'objectif est clair, plus la formule sera juste du premier coup.</p>
+
+        <h3>Décrivez la structure de vos données</h3>
+        <p>Expliquez quelles colonnes vous avez, quel type de données elles contiennent, et où elles se trouvent. Par exemple :</p>
+        <ul class="list-check">
+            <li>Colonne A : Noms de produits</li>
+            <li>Colonne B : Quantités vendues (nombres)</li>
+            <li>Colonne C : Prix unitaire en euros</li>
+            <li>Colonne D : Région (texte)</li>
+            <li>Les données commencent à la ligne 2 et vont jusqu'à la ligne 500</li>
+        </ul>
+
+        <h3>Donnez un exemple concret</h3>
+        <p>Si possible, fournissez quelques lignes d'exemple avec les résultats attendus. Cela élimine toute ambiguïté. ChatGPT comprendra immédiatement votre logique métier.</p>
+
+        <h3>Mentionnez les contraintes</h3>
+        <p>Avez-vous besoin que la formule soit compatible avec une version ancienne d'Excel ? Souhaitez-vous une solution en formule simple ou acceptez-vous un tableau croisé dynamique ? Faut-il que le résultat soit actualisé automatiquement ? Ces détails changent la réponse.</p>
+
+        <h3>Un exemple réel de bonne demande</h3>
+        <p><em>« Je gère une feuille de commandes. J'ai les colonnes : ID client (A), Nom client (B), Date commande (C), Montant (D), Statut (E). Je veux créer une formule qui me retourne le dernier montant commandé par chaque client, mais seulement pour les commandes avec le statut 'Livrée'. Je travaille avec Excel 2019. Les données vont de la ligne 2 à la ligne 1000. »</em></p>
+
+        <p>Avec cette demande, ChatGPT vous fournira une formule INDEX-MATCH ou une solution adaptée, sans aucune hypothèse mal fondée.</p>
+
+        <h2 id="exemples-pratiques">Exemples pratiques : les formules les plus utiles</h2>
+        <p>Voici des cas concrets où ChatGPT brille particulièrement.</p>
+
+        <h3>Cas 1 : Recherche avec plusieurs critères (VLOOKUP amélioré)</h3>
+        <p>Vous avez une base de clients avec plusieurs fichiers. Vous voulez chercher le prix d'un produit en fonction de son code ET de sa région, car le prix varie par géographie.</p>
+
+        <p>La demande à ChatGPT : <em>« J'ai une feuille 'Produits' avec Colonne A = Code produit, Colonne B = Région, Colonne C = Prix. Dans ma feuille 'Commandes', j'ai Colonne A = Code produit, Colonne B = Région, je veux une formule qui récupère le prix correspondant des deux critères. »</em></p>
+
+        <p>ChatGPT vous proposera une formule INDEX-MATCH ou SUMPRODUCT bien plus puissante qu'une simple VLOOKUP. Cela montre pourquoi connaître ChatGPT transforme votre maîtrise d'Excel : vous ne vous limitez plus à une fonction basique, vous explorez des solutions avancées.</p>
+
+        <h3>Cas 2 : Comptage avec condition</h3>
+        <p>Vous vendez des produits avec différents statuts (Actif, Inactif, En rupture). Vous voulez compter combien de produits sont actuellement « En rupture » dans chaque catégorie.</p>
+
+        <p>La demande à ChatGPT : <em>« Colonne A = Catégorie produit (Électronique, Vêtements, Livres), Colonne B = Statut produit. Je veux compter par catégorie combien sont en statut 'En rupture'. »</em></p>
+
+        <p>ChatGPT vous recommandera COUNTIFS ou une formule matricielle selon la complexité.</p>
+
+        <figure class="article-figure">
+            <img src="https://images.pexels.com/photos/2599244/pexels-photo-2599244.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="Tableau Excel affichant des formules ChatGPT COUNTIFS et SUMIFS appliquées aux données de ventes" width="1200" height="800" loading="lazy">
+            <figcaption>Les formules conditionnelles COUNTIFS et SUMIFS, fréquemment générées par ChatGPT, permettent des analyses robustes.</figcaption>
+        </figure>
+
+        <h3>Cas 3 : Calcul de périodes et dates</h3>
+        <p>Vous gérez des projets avec des dates de début et fin. Vous voulez calculer le nombre de jours écoulés, identifier les projets en retard, ou calculer la durée moyenne.</p>
+
+        <p>ChatGPT maîtrise parfaitement les fonctions de date (TODAY, DATEDIF, DATE, EDATE) et peut les combiner avec des IF pour créer des formules temporelles complexes.</p>
+
+        <h3>Cas 4 : Concaténation et manipulation de texte</h3>
+        <p>Vous avez le prénom en colonne A et le nom en colonne B, vous voulez créer un email du format « prenom.nom@societe.fr ».</p>
+
+        <p>ChatGPT génère la formule CONCATENATE (ou l'opérateur &) en tenant compte des majuscules, espaces, et règles de normalisation. Il vous montre aussi des variantes selon votre version d'Excel (Excel 365 accepte des approches plus modernes).</p>
+
+        <h2 id="corrections-et-optimisations">Corriger et optimiser vos formules existantes</h2>
+        <p>ChatGPT n'est pas qu'un générateur : c'est aussi votre <strong>coach formules</strong>.</p>
+
+        <h3>Déboguer une formule cassée</h3>
+        <p>Vous avez une formule qui retourne #VALUE!, #REF!, #NAME?, ou #DIV/0! ? ChatGPT analyse le problème instantanément :</p>
+        <ul class="list-check">
+            <li>#VALUE! : type de données incompatible (vous additionner du texte à un nombre)</li>
+            <li>#REF! : référence brisée (vous avez supprimé une colonne citée dans la formule)</li>
+            <li>#NAME? : formule mal orthographiée ou fonction inconnue</li>
+            <li>#DIV/0! : division par zéro</li>
+        </ul>
+
+        <p>Collez simplement votre formule cassée + le contexte, et ChatGPT vous explique le bug et vous propose une correction.</p>
+
+        <h3>Optimiser une formule qui fonctionne mais est lente</h3>
+        <p>Si votre classeur devient lent, c'est souvent à cause de formules inefficaces (trop de calculs récursifs, de références externes, ou de fonctions coûteuses). ChatGPT vous propose des reformulations plus rapides. Cela vaut surtout pour les bases de données volumineuses (plus de 10 000 lignes).</p>
+
+        <p>Par exemple, une formule utilisant SUMPRODUCT répétée 1000 fois peut être remplacée par une approche plus légère si vous la restructurez. ChatGPT identifie ces optimisations.</p>
+
+        <h3>Adapter une formule à un nouveau contexte</h3>
+        <p>Vous avez une formule qui fonctionne parfaitement pour un fichier de ventes 2025, mais vous voulez l'utiliser pour un fichier de ventes 2026 avec une structure légèrement différente. Montrez la formule originale et la nouvelle structure à ChatGPT : il vous expliquera quels changements faire et pourquoi.</p>
+
+        <h2 id="limites-et-pieges">Limites et pièges à connaître</h2>
+        <p>ChatGPT est puissant, mais il n'est pas parfait. Connaître ses limites évite des déceptions et des erreurs.</p>
+
+        <h3>ChatGPT ne connaît pas les plugins Excel propriétaires</h3>
+        <p>Si vous utilisez des extensions spécialisées (add-ins) avec des fonctions personnalisées, ChatGPT ne les connaît pas. Il fonctionnera avec les fonctions natives d'Excel, mais pas avec les customs.</p>
+
+        <h3>Les formules très complexes peuvent être imprécises</h3>
+        <p>Plus une formule est imbriquée (IF dans SUMIF dans INDEX-MATCH...), plus le risque de petites erreurs augmente. Testez toujours sur un échantillon de données avant d'appliquer à 10 000 lignes.</p>
+
+        <h3>ChatGPT peut « halluciner » des fonctions</h3>
+        <p>Il peut inventer une fonction qui n'existe pas, ou confondre la syntaxe de fonctions similaires entre Excel et Google Sheets. Vérifiez toujours auprès de la documentation officielle si vous n'êtes pas sûr.</p>
+
+        <h3>Les formules VBA/Macro échappent à ChatGPT (en partie)</h3>
+        <p>ChatGPT peut générer du VBA (le langage des macros), mais c'est moins fiable que pour les formules natives. Pour du VBA avancé, préférez <a href="/alternatives-chatgpt/">d'autres alternatives à ChatGPT</a> comme Claude ou GitHub Copilot.</p>
+
+        <h3>Différences entre versions d'Excel</h3>
+        <p>Excel sur Mac, Excel 2019, Excel 365, Google Sheets : les fonctions ne sont pas identiques partout. Toujours préciser votre environnement dans votre demande. ChatGPT connaît ces différences, mais il faut lui en parler.</p>
+
+        <h3>Les formules dynamiques et les mises à jour</h3>
+        <p>Si vous ajoutez une ligne de données, votre formule Excel classique ne s'étendra pas automatiquement. ChatGPT peut vous proposer des solutions (tables, formules matricielles avec #) mais il faut lui demander explicitement.</p>
+
+        <p>Si vous travaillez beaucoup avec des structures de données qui grandissent, consultez notre guide sur l'<a href="/chatgpt-api/">utilisation de l'API ChatGPT</a> pour des intégrations plus robustes. Pour des opérations de traduction ou de transformation de données textuelles, découvrez aussi notre guide sur <a href="/chatgpt-traduction-francais/">ChatGPT traduction français</a>.</p>
+
+        <h3>Cas limites : PowerQuery vs formules natives</h3>
+        <p>Pour des transformations complexes de données (fusion de fichiers, nettoyage, pivot), PowerQuery (ETL intégré) peut être plus adapté qu'une formule Excel brute. ChatGPT peut vous aider sur les deux, mais reconnaître la limite entre « formule Excel » et « PowerQuery » est important pour ne pas vous perdre.</p>
+
+        <p>De la même façon, pour des analyses très avancées ou de la modélisation statistique, évaluez aussi <a href="/meilleur-modele-ia-gratuit/">le meilleur modèle IA gratuit</a> pour votre cas d'usage : Python, R, ou même des outils dédiés à l'analyse peuvent parfois être plus efficaces qu'Excel.</p>
+
+        <h3>Sécurité et confidentialité</h3>
+        <p>Ne collez jamais de données réelles sensibles (numéros de client, salaires, données personnelles) dans ChatGPT gratuitement. Les données passent par les serveurs d'OpenAI et peuvent être loggées. Utilisez ChatGPT Plus ou l'API avec des options de confidentialité renforcées si vous devez traiter des données sensibles. Pour les questions très sensibles en entreprise, demandez à votre IT l'accès à une instance ChatGPT privée, ou consultez notre article sur <a href="/chatgpt-cahier-des-charges/">ChatGPT pour rédiger un cahier des charges</a> (qui contient aussi des recommandations de sécurité IT).</p>
+
+        <h3>ChatGPT vs alternatives pour Excel</h3>
+        <p>ChatGPT est excellent, mais d'autres outils spécialisés existent. <a href="/chatgpt-vs-claude/">Notre comparaison ChatGPT vs Claude</a> montre que Claude excelle parfois sur les tâches de compréhension nuancée. Pour un comparatif plus large, consultez notre article sur les <a href="/alternatives-chatgpt/">7 meilleures alternatives à ChatGPT</a>. Chacun a ses forces : ChatGPT pour la vitesse, Claude pour la précision, Gemini pour l'intégration Google.</p>
+
+        <h2 id="faq">Questions fréquentes</h2>
+        <div class="faq">
+            <div class="faq-item">
+                <h3>ChatGPT peut-il vraiment générer des formules Excel complexes ?</h3>
+                <p>Oui, ChatGPT excelle dans la génération de formules Excel, même complexes. Il comprend la logique des fonctions comme VLOOKUP, INDEX-MATCH, SUMIF ou les formules matricielles. Cependant, plus la formule est spécifique à votre contexte, plus vous devez fournir de détails précis pour obtenir un résultat optimal. Pour une demande vague, le résultat peut nécessiter des ajustements.</p>
+            </div>
+            <div class="faq-item">
+                <h3>Comment bien promter ChatGPT pour obtenir la bonne formule Excel ?</h3>
+                <p>La clarté de votre demande est cruciale. Décrivez précisément ce que vous voulez obtenir, mentionnez les colonnes ou plages de données concernées, et donnez un exemple concret si possible. Indiquez aussi la version d'Excel que vous utilisez (certaines fonctions varient). Par exemple, au lieu de « fais-moi une formule », écrivez : « Dans la colonne A j'ai des noms, dans la colonne B des ventes. Je veux trouver le nom avec la vente la plus élevée ».</p>
+            </div>
+            <div class="faq-item">
+                <h3>ChatGPT peut-il expliquer des formules Excel existantes ?</h3>
+                <p>Absolument. Copiez-collez simplement votre formule dans ChatGPT en demandant une explication. Il vous décomposera chaque fonction, expliquera la logique globale, et vous montrera comment la modifier si besoin. C'est particulièrement utile pour comprendre des formules trouvées sur internet ou créées par des collègues.</p>
+            </div>
+            <div class="faq-item">
+                <h3>Quels types de formules Excel ChatGPT maîtrise-t-il le mieux ?</h3>
+                <p>ChatGPT maîtrise très bien les formules de recherche (VLOOKUP, INDEX-MATCH), les formules conditionnelles (IF, IFS), les formules de sommation (SUMIF, SUMIFS), et les manipulations de texte (CONCATENATE, LEFT, RIGHT). Les formules plus exotiques ou spécifiques à des plugins tiers peuvent parfois poser problème. Testez toujours le résultat dans votre fichier avant de l'utiliser en production.</p>
+            </div>
+            <div class="faq-item">
+                <h3>Y a-t-il une différence entre ChatGPT gratuit et ChatGPT Plus pour les formules Excel ?</h3>
+                <p>ChatGPT gratuit (GPT-3.5) peut générer des formules Excel, mais avec moins de précision sur les cas complexes. ChatGPT Plus (GPT-4) offre une meilleure compréhension des formules imbriquées et des logiques métier avancées. Pour des besoins professionnels sérieux, GPT-4 est recommandé, mais GPT-3.5 suffit souvent pour l'apprentissage ou des formules simples à intermédiaires.</p>
+            </div>
+        </div>
+
+        <div class="author-box">
+            <div class="author-ini">AM</div>
+            <div>
+                <h3>Alexandre Meynier</h3>
+                <p>Rédacteur spécialisé sur les outils d'intelligence artificielle générative. Il teste les modèles au quotidien et documente ce qu'ils savent faire, et ce qu'ils ne savent pas faire.</p>
+                <p><a href="/a-propos/">En savoir plus</a></p>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        © 2025 chat-gpt-france.fr — Guide indépendant, non affilié à OpenAI
+    </footer>
+</body>
+</html>
