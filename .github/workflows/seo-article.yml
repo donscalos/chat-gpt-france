@@ -118,7 +118,7 @@ jobs:
           - Utilise exactement ce CSS externe : <link rel="stylesheet" href="../css/style.css">
           - Structure de navigation identique aux autres pages du site :
             <header><div class="header-inner"><a href="/" class="logo">ChatGPT France</a><nav><a href="/">Accueil</a><a href="/gratuit/">Gratuit</a><a href="/sans-inscription/">Sans compte</a><a href="/alternatives-chatgpt/">Alternatives</a><a href="/blog/">Blog</a><a href="/a-propos/">À propos</a></nav></div></header>
-          - Footer identique : © 2025 chat-gpt-france.fr — Guide indépendant, non affilié à OpenAI
+          - Footer identique : © 2026 chat-gpt-france.fr &middot; Guide indépendant, non affilié à OpenAI
           - Lang="fr", canonical="https://chat-gpt-france.fr/{slug}/"
           - Title SEO optimisé (60 chars max), meta description (155 chars max)
 
